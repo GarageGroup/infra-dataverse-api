@@ -119,11 +119,19 @@ partial class ApiClientTestDataSource
                         body: emailMessage2.Body,
                         sender: new(senderEmail),
                         recipients: recipients,
-                        extensionData: extensionData.ToFlatArray()),
+                        extensionData: extensionData.ToFlatArray())
+                    {
+                        CallerObjectId = new("bdb05d3f-29c1-48ec-9b0b-5c55e6df669b")
+                    },
                     new(
                         verb: DataverseHttpVerb.Post,
                         url: "/api/data/v9.2/emails?$select=activityid",
-                        headers: DefaultSendEmailHeaders,
+                        headers:
+                        [
+                            CreateCallerObjectIdHeader("bdb05d3f-29c1-48ec-9b0b-5c55e6df669b"),
+                            new("Accept", "application/json"),
+                            new("Prefer", "return=representation")
+                        ],
                         content: new DataverseEmailCreateJsonIn
                         {
                             Description = emailMessage2.Body,

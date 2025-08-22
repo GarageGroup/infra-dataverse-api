@@ -10,12 +10,6 @@ internal sealed partial class DataverseApiClient
         DataverseEmailSendIn input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<DataverseEmailSendOut>(cancellationToken);
-        }
-
         return InnerSendEmailAsync(input, cancellationToken);
     }
 
@@ -26,16 +20,21 @@ internal sealed partial class DataverseApiClient
         {
             if (input.EmailId is not null)
             {
-                return await InnerSendEmailAsync(input.EmailId.Value, cancellationToken).ConfigureAwait(false);
+                return await InnerSendAsync(input.EmailId.Value, cancellationToken).ConfigureAwait(false);
             }
 
             var creationResult = await InnerCreateEmailAsync(input, cancellationToken).ConfigureAwait(false);
-            return await creationResult.ForwardValueAsync(InnerSendEmailAsync, cancellationToken).ConfigureAwait(false);
+            return await creationResult.ForwardValueAsync(InnerSendAsync, cancellationToken).ConfigureAwait(false);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
             return ToDataverseFailure(ex, "An unexpected exception was thrown when trying to send a Dataverse email");
         }
+
+        ValueTask<Result<DataverseEmailSendOut, Failure<DataverseFailureCode>>> InnerSendAsync(
+            Guid emailId, CancellationToken cancellationToken)
+            =>
+            InnerSendEmailAsync(emailId, input.CallerObjectId, cancellationToken);
     }
 
     private async ValueTask<Result<Guid, Failure<DataverseFailureCode>>> InnerCreateEmailAsync(
@@ -46,7 +45,10 @@ internal sealed partial class DataverseApiClient
             body: input.Body,
             sender: input.Sender,
             recipients: input.Recipients,
-            extensionData: input.ExtensionData);
+            extensionData: input.ExtensionData)
+        {
+            CallerObjectId = input.CallerObjectId
+        };
 
         var result = await InnerCreateEmailAsync(@in, cancellationToken).ConfigureAwait(false);
         return result.MapSuccess(GetEmailId);
@@ -57,7 +59,7 @@ internal sealed partial class DataverseApiClient
     }
 
     private async ValueTask<Result<DataverseEmailSendOut, Failure<DataverseFailureCode>>> InnerSendEmailAsync(
-        Guid emailId, CancellationToken cancellationToken)
+        Guid emailId, Guid? callerObjectId, CancellationToken cancellationToken)
     {
         var emailSendJsonIn = new DataverseEmailSendJsonIn
         {
@@ -67,7 +69,7 @@ internal sealed partial class DataverseApiClient
         var request = new DataverseJsonRequest(
             verb: DataverseHttpVerb.Post,
             url: BuildDataRequestUrl($"emails({emailId:D})/Microsoft.Dynamics.CRM.SendEmail"),
-            headers: GetAllHeaders(),
+            headers: GetAllHeaders(callerObjectId),
             content: emailSendJsonIn.SerializeOrThrow());
 
         var result = await httpApi.SendJsonAsync(request, cancellationToken).ConfigureAwait(false);

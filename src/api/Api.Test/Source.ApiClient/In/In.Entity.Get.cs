@@ -122,6 +122,28 @@ partial class ApiClientTestDataSource
                         CreateCallerIdHeader("18945ff7-9433-4e74-a403-abd6db25ef27")
                     ],
                     content: default)
+            },
+            {
+                new("18945ff7-9433-4e74-a403-abd6db25ef27"),
+                new(
+                    entityPluralName: "SomeEntities",
+                    entityKey: new StubEntityKey("SomeKey"),
+                    selectFields: new("field1", "field2"),
+                    expandFields:
+                    [
+                        new("LookupOne")
+                    ])
+                {
+                    CallerObjectId = new("510cd0e0-9e82-41fb-8ec0-e1f14d9a1842")
+                },
+                new(
+                    verb: DataverseHttpVerb.Get,
+                    url: "/api/data/v9.2/SomeEntities(SomeKey)?$select=field1,field2&$expand=LookupOne",
+                    headers:
+                    [
+                        CreateCallerObjectIdHeader("510cd0e0-9e82-41fb-8ec0-e1f14d9a1842")
+                    ],
+                    content: default)
             }
         };
 }

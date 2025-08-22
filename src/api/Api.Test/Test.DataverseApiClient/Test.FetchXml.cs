@@ -25,22 +25,10 @@ partial class DataverseApiClientTest
             dataverseApiClient.FetchXmlAsync<StubResponseJson>(null!, token).AsTask();
     }
 
-    [Fact]
-    public static void FetchXmlAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockJsonHttpApi(SomeResponseJsonSet.InnerToJsonResponse());
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-        var actualTask = dataverseApiClient.FetchXmlAsync<StubResponseJson>(new Fixture().Create<DataverseFetchXmlIn>(), token);
-        
-        Assert.True(actualTask.IsCanceled);
-    }
-    
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.FetchXmlInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task FetchXmlAsync_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
-        DataverseFetchXmlIn input, DataverseJsonRequest expectedRequest)
+    internal static async Task FetchXmlAsync_InputIsNotNull_ExpectHttpRequestCalledOnce(
+        Guid? callerUserId, DataverseFetchXmlIn input, DataverseJsonRequest expectedRequest)
     {
         var fixture = new Fixture();
         var unCustomizedFixture = new Fixture();
@@ -52,7 +40,7 @@ partial class DataverseApiClientTest
         var success = fixture.Create<DataverseFetchXmlOutJson<StubResponseJson>>().InnerToJsonResponse();
 
         var mockHttpApi = CreateMockJsonHttpApi(success);
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
+        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider(), callerUserId);
 
         var token = new CancellationToken(canceled: false);
         _ = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, token);

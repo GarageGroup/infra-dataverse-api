@@ -24,21 +24,9 @@ partial class DataverseApiClientTest
             dataverseApiClient.DeleteEntityAsync(null!, token).AsTask();
     }
 
-    [Fact]
-    public static void DeleteEntityAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockJsonHttpApi(default(DataverseJsonResponse));
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-
-        var actualTask = dataverseApiClient.DeleteEntityAsync(SomeDataverseEntityDeleteInput, token);
-        Assert.True(actualTask.IsCanceled);
-    }
-
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.EntityDeleteInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task DeleteEntityAsync_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
+    internal static async Task DeleteEntityAsync_InputIsNotNull_ExpectHttpRequestCalledOnce(
         Guid? callerId, DataverseEntityDeleteIn input, DataverseJsonRequest expectedRequest)
     {
         var mockHttpApi = CreateMockJsonHttpApi(SomeResponseJson.InnerToJsonResponse());

@@ -1,17 +1,17 @@
 using System;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using Moq;
 using PrimeFuncPack;
 
 namespace GarageGroup.Infra.Dataverse.Api.Impersonation.Test;
 
-public static partial class ImpersonationDelegatingHandlerTest
+[Obsolete("This class is obsolete and will be removed in a future version.")]
+public static partial class LegacyImpersonationDelegatingHandlerTest
 {
-    private const string CallerIdHeaderName = "MSCRMCallerID";
-
-    private static readonly Guid SomeCallerId = Guid.Parse("d41668b5-643f-4d30-92fd-92ce78801f51");
+    private static readonly Guid SomeCallerId
+        =
+        new("d41668b5-643f-4d30-92fd-92ce78801f51");
 
     private static HttpMessageHandler CreateImpersonationDelegatingHandler(
         HttpMessageHandler innerHandler, IAsyncValueFunc<Guid> callerIdProvider)
@@ -28,7 +28,7 @@ public static partial class ImpersonationDelegatingHandlerTest
 
         _ = mock
             .Setup(p => p.InvokeAsync(It.IsAny<CancellationToken>()))
-            .Returns(new ValueTask<Guid>(callerId));
+            .ReturnsAsync(callerId);
 
         return mock;
     }
@@ -40,7 +40,7 @@ public static partial class ImpersonationDelegatingHandlerTest
 
         var m = mock
             .Setup(p => p.InvokeAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult(responseMessage));
+            .ReturnsAsync(responseMessage);
 
         if (callback is not null)
         {

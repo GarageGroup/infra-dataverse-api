@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GarageGroup.Infra;
 
@@ -18,6 +16,8 @@ internal sealed partial class DataverseApiClient : IDataverseApiClient
     private const string AcceptHeaderName = "Accept";
 
     private const string CallerIdHeaderName = "MSCRMCallerID";
+
+    private const string CallerObjectIdHeaderName = "CallerObjectId";
 
     private const string PreferHeaderName = "Prefer";
 
@@ -56,22 +56,26 @@ internal sealed partial class DataverseApiClient : IDataverseApiClient
         =>
         $"/api/{ApiTypeData}/v{ApiVersionData}/{dataUrl}";
 
-    private IEnumerable<DataverseHttpHeader> GetAllHeadersWithRepresentation(bool? suppressDuplicateDetection, bool? isUpsert = null)
+    private IEnumerable<DataverseHttpHeader> GetAllHeadersWithRepresentation(
+        Guid? callerObjectId, bool? suppressDuplicateDetection, bool? isUpsert = null)
         =>
         GetAllHeaders(
+            callerObjectId,
             new(PreferHeaderName, ReturnRepresentationValue),
             GetSuppressDuplicateDetectionHeader(suppressDuplicateDetection),
             GetIfMatchHeader(isUpsert));
 
-    private IEnumerable<DataverseHttpHeader> GetAllHeadersWithoutRepresentation(bool? suppressDuplicateDetection, bool? isUpsert = null)
+    private IEnumerable<DataverseHttpHeader> GetAllHeadersWithoutRepresentation(
+        Guid? callerObjectId, bool? suppressDuplicateDetection, bool? isUpsert = null)
         =>
         GetAllHeaders(
+            callerObjectId,
             GetSuppressDuplicateDetectionHeader(suppressDuplicateDetection),
             GetIfMatchHeader(isUpsert));
 
-    private IEnumerable<DataverseHttpHeader> GetAllHeaders(params DataverseHttpHeader?[] headers)
+    private IEnumerable<DataverseHttpHeader> GetAllHeaders(Guid? callerObjectId, params DataverseHttpHeader?[] headers)
     {
-        var callerIdHeader = GetCallerIdHeader(callerId);
+        var callerIdHeader = GetCallerObjectIdHeader(callerObjectId) ?? GetCallerIdHeader(callerId);
         if (callerIdHeader is not null)
         {
             yield return callerIdHeader;
@@ -88,15 +92,19 @@ internal sealed partial class DataverseApiClient : IDataverseApiClient
         }
     }
 
-    private FlatArray<DataverseHttpHeader> GetAllHeaders()
+    private FlatArray<DataverseHttpHeader> GetAllHeaders(Guid? callerObjectId = null)
     {
-        var callerIdHeader = GetCallerIdHeader(callerId);
+        var callerIdHeader = GetCallerObjectIdHeader(callerObjectId) ?? GetCallerIdHeader(callerId);
         return callerIdHeader is null ? default : new(callerIdHeader);
     }
 
     private static DataverseHttpHeader? GetCallerIdHeader(Guid? callerId)
         =>
         callerId is null ? null : new(CallerIdHeaderName, callerId.Value.ToString("D"));
+
+    private static DataverseHttpHeader? GetCallerObjectIdHeader(Guid? callerObjectId)
+        =>
+        callerObjectId is null ? null : new(CallerObjectIdHeaderName, callerObjectId.Value.ToString("D"));
 
     private static DataverseHttpHeader? GetSuppressDuplicateDetectionHeader(bool? suppressDuplicateDetection)
     {
@@ -148,8 +156,4 @@ internal sealed partial class DataverseApiClient : IDataverseApiClient
         {
             SourceException = exception
         };
-
-    private static ValueTask<Result<T, Failure<DataverseFailureCode>>> GetCanceledAsync<T>(CancellationToken cancellationToken)
-        =>
-        ValueTask.FromCanceled<Result<T, Failure<DataverseFailureCode>>>(cancellationToken);
 }

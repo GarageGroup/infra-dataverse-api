@@ -3,11 +3,11 @@ using System.Net.Http;
 
 namespace GarageGroup.Infra;
 
-internal sealed partial class ImpersonationDelegatingHandler : DelegatingHandler
+internal sealed partial class LegacyImpersonationDelegatingHandler : DelegatingHandler
 {
     private const string CallerIdHeaderName = "MSCRMCallerID";
 
-    public static ImpersonationDelegatingHandler Create(HttpMessageHandler innerHandler, IAsyncValueFunc<Guid> callerIdProvider)
+    public static LegacyImpersonationDelegatingHandler Create(HttpMessageHandler innerHandler, IAsyncValueFunc<Guid> callerIdProvider)
     {
         ArgumentNullException.ThrowIfNull(innerHandler);
         ArgumentNullException.ThrowIfNull(callerIdProvider);
@@ -17,7 +17,7 @@ internal sealed partial class ImpersonationDelegatingHandler : DelegatingHandler
 
     private readonly IAsyncValueFunc<Guid> callerIdProvider;
 
-    private ImpersonationDelegatingHandler(HttpMessageHandler innerHandler, IAsyncValueFunc<Guid> callerIdProvider) : base(innerHandler)
+    private LegacyImpersonationDelegatingHandler(HttpMessageHandler innerHandler, IAsyncValueFunc<Guid> callerIdProvider) : base(innerHandler)
         =>
         this.callerIdProvider = callerIdProvider;
 }

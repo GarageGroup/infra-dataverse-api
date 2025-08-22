@@ -89,6 +89,53 @@ partial class ApiClientTestDataSource
                                 Name = "First request name"
                             }.InnerToJsonContentIn())
                     ])
+            },
+            {
+                null,
+                new("90ca0c0f-caf8-44b5-aa01-034da39d0953"),
+                new("97a5109b-347b-4ea7-bd3a-790cfed94268"),
+                new(
+                    requests:
+                    [
+                        new DataverseEntityDeleteIn(
+                            entityPluralName: "Some/Entities",
+                            entityKey: new StubEntityKey("Some=Key")),
+                        new DataverseEntityCreateIn<StubRequestJson>(
+                            entityPluralName: "SomeEntities",
+                            entityData:  new()
+                            {
+                                Id = 17,
+                                Name = "First request name"
+                            })
+                    ])
+                {
+                    CallerObjectId = new("ffb627c1-f167-4aeb-82ce-a2b3c1b80f53")
+                },
+                new(
+                    url: "/api/data/v9.2/$batch",
+                    batchId: new("90ca0c0f-caf8-44b5-aa01-034da39d0953"),
+                    changeSetId: new("97a5109b-347b-4ea7-bd3a-790cfed94268"),
+                    headers:
+                    [
+                        CreateCallerObjectIdHeader("ffb627c1-f167-4aeb-82ce-a2b3c1b80f53")
+                    ],
+                    requests:
+                    [
+                        new(
+                            verb: DataverseHttpVerb.Delete,
+                            url: "/api/data/v9.2/Some%2fEntities(Some=Key)",
+                            headers: default,
+                            content: default),
+                        new(
+                            verb: DataverseHttpVerb.Post,
+                            url: "/api/data/v9.2/SomeEntities",
+                            headers: default,
+                            content: new StubRequestJson
+                            {
+                                Id = 17,
+                                Name = "First request name"
+                            }.InnerToJsonContentIn())
+                    ])
             }
         };
 }

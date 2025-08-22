@@ -8,21 +8,9 @@ namespace GarageGroup.Infra.Dataverse.Api.Test;
 
 partial class DataverseApiClientTest
 {
-    [Fact]
-    public static void PingAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockJsonHttpApi(SomeWhoAmIOutJson.InnerToJsonResponse());
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-        var actualTask = dataverseApiClient.PingAsync(default, token);
-
-        Assert.True(actualTask.IsCanceled);
-    }
-
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.PingInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task PingAsync_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
+    internal static async Task PingAsync_ExpectHttpRequestCalledOnce(
         Guid? callerId, DataverseJsonRequest expectedRequest)
     {
         var mockHttpApi = CreateMockJsonHttpApi(SomeWhoAmIOutJson.InnerToJsonResponse());

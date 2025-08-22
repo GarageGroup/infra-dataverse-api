@@ -24,21 +24,9 @@ partial class DataverseApiClientTest
             dataverseApiClient.SearchAsync(null!, token).AsTask();
     }
 
-    [Fact]
-    public static void SearchAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockJsonHttpApi(SomeSearchJsonOut.InnerToJsonResponse());
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-
-        var actualTask = dataverseApiClient.SearchAsync(SomeDataverseSearchInput, token);
-        Assert.True(actualTask.IsCanceled);
-    }
-
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.SearchInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task SearchAsync_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
+    internal static async Task SearchAsync_InputIsNotNull_ExpectHttpRequestCalledOnce(
         Guid? callerId, DataverseSearchIn input, DataverseJsonRequest expectedRequest)
     {
         var mockHttpApi = CreateMockJsonHttpApi(SomeSearchJsonOut.InnerToJsonResponse());

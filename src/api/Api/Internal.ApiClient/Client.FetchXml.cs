@@ -13,12 +13,6 @@ internal sealed partial class DataverseApiClient
         DataverseFetchXmlIn input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<DataverseFetchXmlOut<TEntityJson>>(cancellationToken);
-        }
-
         return InnerFetchXmlAsync<TEntityJson>(input, cancellationToken);
     }
 
@@ -30,7 +24,7 @@ internal sealed partial class DataverseApiClient
             var request = new DataverseJsonRequest(
                 verb: DataverseHttpVerb.Get,
                 url: BuildFetchXmlUri(input),
-                headers: GetAllHeaders(BuildPreferHeader(input.IncludeAnnotations)).ToFlatArray(),
+                headers: GetAllHeaders(input.CallerObjectId, BuildPreferHeader(input.IncludeAnnotations)).ToFlatArray(),
                 content: default);
 
             var result = await httpApi.SendJsonAsync(request, cancellationToken).ConfigureAwait(false);

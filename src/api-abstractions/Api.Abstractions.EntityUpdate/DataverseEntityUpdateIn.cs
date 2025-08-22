@@ -41,4 +41,6 @@ public sealed record class DataverseEntityUpdateIn<TInJson> : IDataverseEntityUp
     public bool? SuppressDuplicateDetection { get; init; }
 
     public DataverseUpdateOperationType OperationType { get; init; }
+
+    public Guid? CallerObjectId { get; init; }
 }
