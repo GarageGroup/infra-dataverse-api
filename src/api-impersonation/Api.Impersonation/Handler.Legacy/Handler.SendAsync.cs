@@ -6,22 +6,12 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Infra;
 
-partial class ImpersonationDelegatingHandler
+partial class LegacyImpersonationDelegatingHandler
 {
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return Task.FromCanceled<HttpResponseMessage>(cancellationToken);
-        }
-
-        return InnerSendAsync(request, cancellationToken);
-    }
-
-    private async Task<HttpResponseMessage> InnerSendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-    {
         if (request.Headers.Contains(CallerIdHeaderName))
         {
             request.Headers.Remove(CallerIdHeaderName);

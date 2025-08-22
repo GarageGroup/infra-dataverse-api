@@ -13,12 +13,6 @@ partial class DataverseApiClient
         DataverseEntitySetGetIn input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<DataverseEntitySetGetOut<TJson>>(cancellationToken);
-        }
-
         return InnerGetEntitySetAsync<TJson>(input, cancellationToken);
     }
 
@@ -30,7 +24,7 @@ partial class DataverseApiClient
             var request = new DataverseJsonRequest(
                 verb: DataverseHttpVerb.Get,
                 url: BuildEntitySetGetUri(input),
-                headers: GetAllHeaders(BuildPreferHeader(input.IncludeAnnotations, input.MaxPageSize)).ToFlatArray(),
+                headers: GetAllHeaders(input.CallerObjectId, BuildPreferHeader(input.IncludeAnnotations, input.MaxPageSize)).ToFlatArray(),
                 content: default);
 
             var result = await httpApi.SendJsonAsync(request, cancellationToken).ConfigureAwait(false);

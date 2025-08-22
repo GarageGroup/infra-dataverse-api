@@ -1,3 +1,5 @@
+using System;
+
 namespace GarageGroup.Infra;
 
 public sealed record class DataverseEntityDeleteIn : IDataverseEntityDeleteIn
@@ -10,5 +12,7 @@ public sealed record class DataverseEntityDeleteIn : IDataverseEntityDeleteIn
 
     public string EntityPluralName { get; }
 
-    public IDataverseEntityKey EntityKey{ get; }
+    public IDataverseEntityKey EntityKey { get; }
+
+    public Guid? CallerObjectId { get; init; }
 }

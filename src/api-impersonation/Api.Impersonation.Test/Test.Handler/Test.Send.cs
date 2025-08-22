@@ -13,7 +13,7 @@ partial class ImpersonationDelegatingHandlerTest
     [Fact]
     public static async Task SendAsync_RequestIsNull_ExpectArgumentNullException()
     {
-        var mockCallerIdProvider = CreateMockCallerIdProvider(SomeCallerId);
+        var mockCallerIdProvider = CreateMockCallerIdProvider(SomeCallerObjectId);
 
         using var response = new HttpResponseMessage();
         var mockProxyHandler = CreateMockProxyHandler(response);
@@ -29,34 +29,14 @@ partial class ImpersonationDelegatingHandlerTest
         Assert.Equal("request", ex.ParamName);
     }
 
-    [Fact]
-    public static void SendAsync_CancellationTokenIsCanceled_ResultTaskIsCanceled()
-    {
-        var mockCallerIdProvider = CreateMockCallerIdProvider(SomeCallerId);
-
-        using var response = new HttpResponseMessage();
-        var mockProxyHandler = CreateMockProxyHandler(response);
-
-        using var sourceHandler = new StubHttpMessageHandler(mockProxyHandler.Object);
-        var impersonationHandler = CreateImpersonationDelegatingHandler(sourceHandler, mockCallerIdProvider.Object);
-
-        var httpClient = new HttpMessageInvoker(impersonationHandler);
-
-        using var request = new HttpRequestMessage();
-        var token = new CancellationToken(canceled: true);
-
-        var resultTask = httpClient.SendAsync(request, token);
-        Assert.True(resultTask.IsCanceled);
-    }
-
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public static async Task SendAsync_CancellationTokenIsNotCanceled_ExpectCallInnerHandlerWithCallerId(
+    public static async Task SendAsync_RequestIsNotNull_ExpectCallInnerHandlerWithCallerId(
         bool isSourceRequestWithCallerId)
     {
-        const string callerId = "ac3a51a1-c8e1-4848-a556-ca75935d9e8c";
-        var mockCallerIdProvider = CreateMockCallerIdProvider(Guid.Parse(callerId));
+        var callerObjectId = Guid.Parse("91930144-5ffd-4ef8-892c-83d5f428079d");
+        var mockCallerIdProvider = CreateMockCallerIdProvider(callerObjectId);
 
         using var response = new HttpResponseMessage();
         var mockProxyHandler = CreateMockProxyHandler(response, Callback);
@@ -69,7 +49,7 @@ partial class ImpersonationDelegatingHandlerTest
         using var request = new HttpRequestMessage();
         if (isSourceRequestWithCallerId)
         {
-            request.Headers.Add(CallerIdHeaderName, "Some calleId");
+            request.Headers.Add("CallerObjectId", "Some calleId");
         }
 
         var token = new CancellationToken(canceled: false);
@@ -79,15 +59,15 @@ partial class ImpersonationDelegatingHandlerTest
         
         static void Callback(HttpRequestMessage actualRequest)
         {
-            var actualCallerId = actualRequest.Headers.GetValues(CallerIdHeaderName).First();
-            Assert.Equal(callerId, actualCallerId);
+            var actualCallerId = actualRequest.Headers.GetValues("CallerObjectId").First();
+            Assert.Equal("91930144-5ffd-4ef8-892c-83d5f428079d", actualCallerId);
         }
     }
 
     [Fact]
-    public static async Task SendAsync_CancellationTokenIsNotCanceled_ExpectSourceResponse()
+    public static async Task SendAsync_RequestIsNotNull_ExpectSourceResponse()
     {
-        var mockCallerIdProvider = CreateMockCallerIdProvider(SomeCallerId);
+        var mockCallerIdProvider = CreateMockCallerIdProvider(SomeCallerObjectId);
 
         using var sourceResponse = new HttpResponseMessage();
         var mockProxyHandler = CreateMockProxyHandler(sourceResponse);

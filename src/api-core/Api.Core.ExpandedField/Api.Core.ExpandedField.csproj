@@ -4,11 +4,11 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Core.ExpandedField</AssemblyName>
-    <Version>1.8.0</Version>
+    <Version>1.8.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.5.0" />
+    <PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.5.1" />
   </ItemGroup>
 
 </Project>

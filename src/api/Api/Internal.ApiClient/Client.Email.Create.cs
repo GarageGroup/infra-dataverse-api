@@ -11,22 +11,22 @@ internal sealed partial class DataverseApiClient
         DataverseEmailCreateIn input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<DataverseEmailCreateOut>(cancellationToken);
-        }
-
         return InnerCreateEmailAsync(input, cancellationToken);
     }
 
     private ValueTask<Result<DataverseEmailCreateOut, Failure<DataverseFailureCode>>> InnerCreateEmailAsync(
         DataverseEmailCreateIn input, CancellationToken cancellationToken)
-        =>
-        GetJsonOrFailure(input).ForwardValueAsync(InnerCreateEmailAsync, cancellationToken);
+    {
+        return GetJsonOrFailure(input).ForwardValueAsync(InnerCreateAsync, cancellationToken);
+
+        ValueTask<Result<DataverseEmailCreateOut, Failure<DataverseFailureCode>>> InnerCreateAsync(
+            DataverseEmailCreateJsonIn @in, CancellationToken cancellationToken)
+            =>
+            InnerCreateEmailAsync(@in, input.CallerObjectId, cancellationToken);
+    }
 
     private async ValueTask<Result<DataverseEmailCreateOut, Failure<DataverseFailureCode>>> InnerCreateEmailAsync(
-        DataverseEmailCreateJsonIn input, CancellationToken cancellationToken)
+        DataverseEmailCreateJsonIn input, Guid? callerObjectId, CancellationToken cancellationToken)
     {
         try
         {
@@ -34,6 +34,7 @@ internal sealed partial class DataverseApiClient
                 verb: DataverseHttpVerb.Post,
                 url: BuildDataRequestUrl("emails?$select=activityid"),
                 headers: GetAllHeaders(
+                    callerObjectId,
                     new(AcceptHeaderName, MediaTypeNames.Application.Json), 
                     new(PreferHeaderName, ReturnRepresentationValue)).ToFlatArray(), 
                 content: input.SerializeOrThrow());
@@ -56,31 +57,27 @@ internal sealed partial class DataverseApiClient
     {
         if (input.Sender is null)
         {
-            return CreateFailure("Input sender is missing");
+            return Failure.Create(DataverseFailureCode.Unknown, "Input sender is missing");
         }
         
         if (string.IsNullOrEmpty(input.Sender.SenderEmail) && input.Sender.SenderMember is null)
         {
-            return CreateFailure("Input sender is invalid");
+            return Failure.Create(DataverseFailureCode.Unknown, "Input sender is invalid");
         }
 
         if (input.Recipients.IsEmpty)
         {
-            return CreateFailure("Input recipients are missing");
+            return Failure.Create(DataverseFailureCode.Unknown, "Input recipients are missing");
         }
 
         foreach (var recipient in input.Recipients)
         {
             if (string.IsNullOrEmpty(recipient.SenderRecipientEmail) && recipient.EmailMember is null)
             {
-                return CreateFailure("Input recipients are invalid");
+                return Failure.Create(DataverseFailureCode.Unknown, "Input recipients are invalid");
             }
         }
 
         return input.MapInput();
-
-        static Failure<DataverseFailureCode> CreateFailure(string message)
-            => 
-            Failure.Create(DataverseFailureCode.Unknown, message);
     }
 }

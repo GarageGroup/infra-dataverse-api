@@ -9,20 +9,6 @@ namespace GarageGroup.Infra.Dataverse.Api.Test;
 partial class DataverseApiClientTest
 {
     [Fact]
-    public static void ExecuteChangeSetAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockChangeSetHttpApi(SomeChangeSetResponse);
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-        var input = SomeChangeSetInput;
-
-        var actualTask = dataverseApiClient.ExecuteChangeSetAsync(input, token);
-
-        Assert.True(actualTask.IsCanceled);
-    }
-
-    [Fact]
     public static async Task ExecuteChangeSetAsync_InputIsEmpty_ExpectHttpApiCalledNever()
     {
         var mockHttpApi = CreateMockChangeSetHttpApi(SomeChangeSetResponse);

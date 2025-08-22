@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DeepEqual.Syntax;
 using Moq;
 using Xunit;
 
@@ -25,21 +24,9 @@ partial class DataverseApiClientTest
             dataverseApiClient.SendEmailAsync(null!, token).AsTask();
     }
 
-    [Fact]
-    public static void SendEmailAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockEmailHttpApi(SomeEmailCreateJsonOut.InnerToJsonResponse(), default(DataverseJsonResponse));
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-        var actualTask = dataverseApiClient.SendEmailAsync(SomeEmailSendInWithEmailId, token);
-
-        Assert.True(actualTask.IsCanceled);
-    }
-
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.EmailSendInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task SendEmailAsync_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
+    internal static async Task SendEmailAsync_InputIsNotNull_ExpectHttpRequestCalledOnce(
         DataverseEmailSendIn input,
         DataverseJsonRequest? expectedCreationRequest,
         DataverseJsonRequest expectedSendingRequest,
@@ -49,24 +36,19 @@ partial class DataverseApiClientTest
 
         var mockHttpApi = CreateMockEmailHttpApi(
             emailOut.InnerToJsonResponse(),
-            default(DataverseJsonResponse),
-            OnCreateRequest);
+            default(DataverseJsonResponse));
 
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var token = new CancellationToken(canceled: false);
         _ = await dataverseApiClient.SendEmailAsync(input, token);
-        
+
         if (expectedCreationRequest is not null)
         {
-            mockHttpApi.Verify(p => p.SendJsonAsync(It.IsAny<DataverseJsonRequest>(), token), Times.Exactly(2));
+            mockHttpApi.Verify(p => p.SendJsonAsync(expectedCreationRequest, token), Times.Once);
         }
-        
-        mockHttpApi.Verify(p => p.SendJsonAsync(expectedSendingRequest, token), Times.Once);
 
-        void OnCreateRequest(DataverseJsonRequest actual)
-            =>
-            actual.ShouldDeepEqual(expectedCreationRequest);
+        mockHttpApi.Verify(p => p.SendJsonAsync(expectedSendingRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]

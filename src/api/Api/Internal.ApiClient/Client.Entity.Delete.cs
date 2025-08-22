@@ -11,12 +11,6 @@ partial class DataverseApiClient
         DataverseEntityDeleteIn input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<Unit>(cancellationToken);
-        }
-
         return InnerDeleteEntityAsync(input, cancellationToken);
     }
 
@@ -43,7 +37,7 @@ partial class DataverseApiClient
         return new(
             verb: DataverseHttpVerb.Delete,
             url: BuildDataRequestUrl($"{encodedPluralName}({input.EntityKey.Value})"),
-            headers: GetAllHeaders(),
+            headers: GetAllHeaders(input.CallerObjectId),
             content: default);
     }
 }

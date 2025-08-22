@@ -78,6 +78,31 @@ partial class ApiClientTestDataSource
                     url: "/api/data/v9.2/Some%2fEntities(Some Key)",
                     headers: default,
                     content: new StubRequestJson().InnerToJsonContentIn())
+            },
+            {
+                null,
+                new(
+                    entityPluralName: "Some/Entities",
+                    entityKey: new StubEntityKey("Some Key"),
+                    selectFields: default,
+                    entityData: new())
+                {
+                    ExpandFields =
+                    [
+                        new("Field1", new("Lookup Field"))
+                    ],
+                    OperationType = DataverseUpdateOperationType.Update,
+                    CallerObjectId = new("1bda4fe6-72a2-4272-85fe-d72569b872a9")
+                },
+                new(
+                    verb: DataverseHttpVerb.Patch,
+                    url: "/api/data/v9.2/Some%2fEntities(Some Key)",
+                    headers:
+                    [
+                        CreateCallerObjectIdHeader("1bda4fe6-72a2-4272-85fe-d72569b872a9"),
+                        new("If-Match", "*")
+                    ],
+                    content: new StubRequestJson().InnerToJsonContentIn())
             }
         };
 }

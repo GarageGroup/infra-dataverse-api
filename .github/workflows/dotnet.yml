@@ -71,6 +71,17 @@ jobs:
     - name: Pack Api.Core.ExpandedField
       run: dotnet pack ./src/*/*/Api.Core.ExpandedField.csproj --no-restore -o ~/nuget  -c Release
 
+    # Api.Core.Impersonation
+
+    - name: Restore Api.Core.Impersonation
+      run: dotnet restore ./src/*/*/Api.Core.Impersonation.csproj
+
+    - name: Build Api.Core.Impersonation
+      run: dotnet build ./src/*/*/Api.Core.Impersonation.csproj --no-restore  -c Release
+
+    - name: Pack Api.Core.Impersonation
+      run: dotnet pack ./src/*/*/Api.Core.Impersonation.csproj --no-restore -o ~/nuget  -c Release
+
     # Api.Core.Transaction
 
     - name: Restore Api.Core.Transaction

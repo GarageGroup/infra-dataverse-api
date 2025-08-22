@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GarageGroup.Infra;
 
-public sealed record class DataverseEmailCreateIn
+public sealed record class DataverseEmailCreateIn : IDataverseImpersonateIn
 {
     [SetsRequiredMembers]
     public DataverseEmailCreateIn(
@@ -54,4 +54,6 @@ public sealed record class DataverseEmailCreateIn
     public required FlatArray<DataverseEmailRecipient> Recipients { get; init; }
 
     public FlatArray<KeyValuePair<string, JsonElement>> ExtensionData { get; init; }
+
+    public Guid? CallerObjectId { get; init; }
 }

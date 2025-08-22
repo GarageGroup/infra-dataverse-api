@@ -4,13 +4,14 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Abstractions.Search</AssemblyName>
-    <Version>3.12.0</Version>
+    <Version>3.13.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.FailureCode" Version="2.2.5" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.Impersonation" Version="1.0.0" />
     <PackageReference Include="PrimeFuncPack.Core.Failure" Version="2.2.0" />
-    <PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.5.0" />
+    <PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.5.1" />
     <PackageReference Include="PrimeFuncPack.Core.Result" Version="2.0.2" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace GarageGroup.Infra;
 
-public sealed record class DataverseEmailSendIn
+public sealed record class DataverseEmailSendIn : IDataverseImpersonateIn
 {
     public DataverseEmailSendIn(Guid emailId)
     {
@@ -40,4 +40,6 @@ public sealed record class DataverseEmailSendIn
     public FlatArray<DataverseEmailRecipient> Recipients { get; }
 
     public FlatArray<KeyValuePair<string, JsonElement>> ExtensionData { get; }
+
+    public Guid? CallerObjectId { get; init; }
 }

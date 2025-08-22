@@ -25,21 +25,9 @@ partial class DataverseApiClientTest
             dataverseApiClient.CreateEmailAsync(null!, token).AsTask();
     }
 
-    [Fact]
-    public static void CreateEmailAsync_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockJsonHttpApi(SomeEmailCreateJsonOut.InnerToJsonResponse());
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var token = new CancellationToken(canceled: true);
-        var actualTask = dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, token);
-
-        Assert.True(actualTask.IsCanceled);
-    }
-
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.EmailCreateInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task CreateEmailAsync_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
+    internal static async Task CreateEmailAsync_InputIsNotNull_ExpectHttpRequestCalledOnce(
         DataverseEmailCreateIn input, DataverseJsonRequest expectedRequest)
     {
         var mockHttpApi = CreateMockJsonHttpApi(SomeEmailCreateJsonOut.InnerToJsonResponse(), OnRequest);

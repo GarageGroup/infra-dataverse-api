@@ -10,11 +10,6 @@ partial class DataverseApiClient
         DataverseChangeSetExecuteIn<TIn> input, CancellationToken cancellationToken = default)
         where TIn : notnull
     {
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<Unit>(cancellationToken);
-        }
-
         if (input.Requests.IsEmpty)
         {
             return new(Result.Success<Unit>(default));
@@ -33,7 +28,7 @@ partial class DataverseApiClient
                 url: BuildDataRequestUrl(BatchRelativeUrl),
                 batchId: guidProvider.NewGuid(),
                 changeSetId: guidProvider.NewGuid(),
-                headers: GetAllHeaders(),
+                headers: GetAllHeaders(input.CallerObjectId),
                 requests: input.Requests.Map(CreateDataverseJsonRequest));
 
             var result = await httpApi.SendChangeSetAsync(request, cancellationToken).ConfigureAwait(false);

@@ -26,6 +26,6 @@ dotnet add package GarageGroup.Infra.Http.SocketsHandlerProvider
 public static Dependency<IDataverseApiClient> UseDataverseApiHandler()
     =>
     PrimaryHandler.UseStandardSocketsHttpHandler()
-    .UseLogging("DataverseApiHandler")
+    .UseLogging("DataverseApi")
     .UseDataverseApiClient("Dataverse");
 ```

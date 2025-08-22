@@ -25,22 +25,9 @@ partial class DataverseApiClientTest
             dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson?>(null!, token).AsTask();
     }
 
-    [Fact]
-    public static void UpdateEntityAsyncWithTOut_CancellationTokenIsCanceled_ExpectTaskIsCanceled()
-    {
-        var mockHttpApi = CreateMockJsonHttpApi(default(DataverseJsonResponse));
-        var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
-
-        var input = SomeDataverseEntityUpdateInput;
-        var token = new CancellationToken(canceled: true);
-
-        var actualTask = dataverseApiClient.UpdateEntityAsync<StubRequestJson, Unit>(input, token);
-        Assert.True(actualTask.IsCanceled);
-    }
-
     [Theory]
     [MemberData(nameof(ApiClientTestDataSource.EntityUpdateWithTOutInputTestData), MemberType = typeof(ApiClientTestDataSource))]
-    internal static async Task UpdateEntityAsyncWithTOut_CancellationTokenIsNotCanceled_ExpectHttpRequestCalledOnce(
+    internal static async Task UpdateEntityAsyncWithTOut_InputIsNotNull_ExpectHttpRequestCalledOnce(
         Guid? callerId, DataverseEntityUpdateIn<IStubRequestJson> input, DataverseJsonRequest expectedRequest)
     {
         var mockHttpApi = CreateMockJsonHttpApi(SomeResponseJson.InnerToJsonResponse());

@@ -178,6 +178,21 @@ partial class ApiClientTestDataSource
                         CreateCallerIdHeader("be070c0c-3cf5-44a4-8eb2-b9b4a686024b")
                     ],
                     content: default)
+            },
+            {
+                new("be070c0c-3cf5-44a4-8eb2-b9b4a686024b"),
+                new("http://garage.ru/api/someLink")
+                {
+                    CallerObjectId = new("e0a56877-2598-49a8-8769-b136ccb1c324")
+                },
+                new(
+                    verb: DataverseHttpVerb.Get,
+                    url: "http://garage.ru/api/someLink",
+                    headers:
+                    [
+                        CreateCallerObjectIdHeader("e0a56877-2598-49a8-8769-b136ccb1c324")
+                    ],
+                    content: default)
             }
         };
 }

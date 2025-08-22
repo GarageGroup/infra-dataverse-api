@@ -12,12 +12,6 @@ partial class DataverseApiClient
         where TInJson : notnull
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<Unit>(cancellationToken);
-        }
-
         return InnerUpdateEntityAsync(input,cancellationToken);
     }
 
@@ -47,7 +41,7 @@ partial class DataverseApiClient
         return new(
             verb: DataverseHttpVerb.Patch,
             url: BuildDataRequestUrl($"{encodedPluralName}({input.EntityKey.Value})"),
-            headers: GetAllHeadersWithoutRepresentation(input.SuppressDuplicateDetection, isUpsert).ToFlatArray(),
+            headers: GetAllHeadersWithoutRepresentation(input.CallerObjectId, input.SuppressDuplicateDetection, isUpsert).ToFlatArray(),
             content: input.EntityData.SerializeOrThrow());
     }
 }

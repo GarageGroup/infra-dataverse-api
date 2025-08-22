@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GarageGroup.Infra;
 
-public sealed record class DataverseEntitySetGetIn
+public sealed record class DataverseEntitySetGetIn : IDataverseImpersonateIn
 {
     public DataverseEntitySetGetIn(string nextLink)
     {
@@ -45,4 +45,6 @@ public sealed record class DataverseEntitySetGetIn
     public int? MaxPageSize { get; init; }
 
     public string? IncludeAnnotations { get; init; }
+
+    public Guid? CallerObjectId { get; init; }
 }

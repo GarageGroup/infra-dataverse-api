@@ -4,13 +4,14 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Abstractions.EntityUpdate</AssemblyName>
-    <Version>3.14.0</Version>
+    <Version>3.15.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.ExpandedField" Version="1.8.0" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.ExpandedField" Version="1.8.1" />
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.FailureCode" Version="2.2.5" />
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.EntityKey" Version="3.1.6" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.Impersonation" Version="1.0.0" />
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.Transaction" Version="1.0.3" />
     <PackageReference Include="PrimeFuncPack.Core.Failure" Version="2.2.0" />
     <PackageReference Include="PrimeFuncPack.Core.Result" Version="2.0.2" />

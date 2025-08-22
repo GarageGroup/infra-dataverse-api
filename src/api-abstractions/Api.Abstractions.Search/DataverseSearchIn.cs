@@ -2,7 +2,7 @@ using System;
 
 namespace GarageGroup.Infra;
 
-public sealed record class DataverseSearchIn
+public sealed record class DataverseSearchIn : IDataverseImpersonateIn
 {
     public DataverseSearchIn(string searchString)
         => 
@@ -27,4 +27,6 @@ public sealed record class DataverseSearchIn
     public DataverseSearchMode? SearchMode {  get; init; }
 
     public DataverseSearchType? SearchType { get; init; }
+
+    public Guid? CallerObjectId { get; init; }
 }

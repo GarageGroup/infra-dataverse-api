@@ -1,6 +1,8 @@
+using System;
+
 namespace GarageGroup.Infra;
 
-public sealed record class DataverseFetchXmlIn
+public sealed record class DataverseFetchXmlIn : IDataverseImpersonateIn
 {
     public DataverseFetchXmlIn(string entityPluralName, string fetchXmlQueryString)
     {
@@ -13,4 +15,6 @@ public sealed record class DataverseFetchXmlIn
     public string EntityPluralName { get; }
 
     public string? IncludeAnnotations { get; init; }
+
+    public Guid? CallerObjectId { get; init; }
 }

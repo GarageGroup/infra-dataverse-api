@@ -2,7 +2,7 @@ using System;
 
 namespace GarageGroup.Infra;
 
-public sealed record class DataverseEntityGetIn
+public sealed record class DataverseEntityGetIn : IDataverseImpersonateIn
 {
     public DataverseEntityGetIn(string entityPluralName, IDataverseEntityKey entityKey)
     {
@@ -41,4 +41,6 @@ public sealed record class DataverseEntityGetIn
     public FlatArray<DataverseExpandedField> ExpandFields { get; init; }
 
     public string? IncludeAnnotations { get; init; }
+
+    public Guid? CallerObjectId { get; init; }
 }

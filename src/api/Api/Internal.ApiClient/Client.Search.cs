@@ -13,12 +13,6 @@ partial class DataverseApiClient
         DataverseSearchIn input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return GetCanceledAsync<DataverseSearchOut>(cancellationToken);
-        }
-
         return InnerSearchAsync(input, cancellationToken);
     }
 
@@ -54,7 +48,7 @@ partial class DataverseApiClient
             var request = new DataverseJsonRequest(
                 verb: DataverseHttpVerb.Post,
                 url: SearchRequestUrl,
-                headers: GetAllHeaders(),
+                headers: GetAllHeaders(input.CallerObjectId),
                 content: searchIn.SerializeOrThrow());
 
             var result = await httpApi.SendJsonAsync(request, cancellationToken).ConfigureAwait(false);

@@ -54,11 +54,19 @@ partial class ApiClientTestDataSource
                             new(emailMember: new(memberIds[1], DataverseEmailMemberType.Contact), DataverseEmailRecipientType.CcRecipient),
                             new(emailMember: new(memberIds[2], DataverseEmailMemberType.SystemUser), DataverseEmailRecipientType.BccRecipient),
                             new(emails[2], DataverseEmailRecipientType.ToRecipient)
-                        ]),
+                        ])
+                    {
+                        CallerObjectId = new("bdb05d3f-29c1-48ec-9b0b-5c55e6df669b")
+                    },
                     new(
                         verb: DataverseHttpVerb.Post,
                         url: "/api/data/v9.2/emails?$select=activityid",
-                        headers: DefaultSendEmailHeaders,
+                        headers:
+                        [
+                            CreateCallerObjectIdHeader("bdb05d3f-29c1-48ec-9b0b-5c55e6df669b"),
+                            new("Accept", "application/json"),
+                            new("Prefer", "return=representation")
+                        ],
                         content: new DataverseEmailCreateJsonIn
                         {
                             Description = emailMessage.Body,
@@ -101,7 +109,10 @@ partial class ApiClientTestDataSource
                     new(
                         verb: DataverseHttpVerb.Post,
                         url: $"/api/data/v9.2/emails({emailGuid:D})/Microsoft.Dynamics.CRM.SendEmail",
-                        headers: default,
+                        headers:
+                        [
+                            CreateCallerObjectIdHeader("bdb05d3f-29c1-48ec-9b0b-5c55e6df669b")
+                        ],
                         content: new DataverseEmailSendJsonIn
                         {
                             IssueSend = true

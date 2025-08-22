@@ -2,7 +2,7 @@
 
 namespace GarageGroup.Infra;
 
-public interface IDataverseEntityDeleteIn : IDataverseTransactableIn<Unit>, IDataverseTransactableIn<object>
+public interface IDataverseEntityDeleteIn : IDataverseTransactableIn<Unit>, IDataverseTransactableIn<object>, IDataverseImpersonateIn
 {
     string EntityPluralName { get; }
 

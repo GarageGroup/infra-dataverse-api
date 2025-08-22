@@ -2,7 +2,7 @@
 
 namespace GarageGroup.Infra;
 
-public interface IDataverseEntityCreateIn<out TInJson> : IDataverseTransactableIn<TInJson>
+public interface IDataverseEntityCreateIn<out TInJson> : IDataverseTransactableIn<TInJson>, IDataverseImpersonateIn
     where TInJson : notnull
 {
     string EntityPluralName { get; }
