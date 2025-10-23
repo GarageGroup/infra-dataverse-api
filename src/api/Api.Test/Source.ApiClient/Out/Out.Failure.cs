@@ -10,40 +10,40 @@ partial class ApiClientTestDataSource
         new()
         {
             {
-                new(DataverseFailureCode.Unknown, string.Empty)
+                Failure.Create(DataverseFailureCode.Unknown, string.Empty)
             },
             {
-                new(DataverseFailureCode.Unknown, "Some text")
+                Failure.Create(DataverseFailureCode.Unknown, "Some text")
             },
             {
-                new(DataverseFailureCode.Unauthorized, "Some unauthorized failure")
+                Failure.Create(DataverseFailureCode.Unauthorized, "Some unauthorized failure")
             },
             {
-                new(DataverseFailureCode.RecordNotFound, "Some Failure Message")
+                Failure.Create(DataverseFailureCode.RecordNotFound, "Some Failure Message")
             },
             {
-                new(DataverseFailureCode.PicklistValueOutOfRange, "Error message")
+                Failure.Create(DataverseFailureCode.PicklistValueOutOfRange, "Error message")
             },
             {
-                new(DataverseFailureCode.UserNotEnabled, "User was not found")
+                Failure.Create(DataverseFailureCode.UserNotEnabled, "User was not found")
             },
             {
-                new(DataverseFailureCode.PrivilegeDenied, "Some failure")
+                Failure.Create(DataverseFailureCode.PrivilegeDenied, "Some failure")
             },
             {
-                new(DataverseFailureCode.Throttling, "Some Throttling Failure")
+                Failure.Create(DataverseFailureCode.Throttling, "Some Throttling Failure")
             },
             {
-                new(DataverseFailureCode.SearchableEntityNotFound, "Some failure")
+                Failure.Create(DataverseFailureCode.SearchableEntityNotFound, "Some failure")
             },
             {
-                new(DataverseFailureCode.InvalidPayload, "Some invalid data")
+                Failure.Create(DataverseFailureCode.InvalidPayload, "Some invalid data")
             },
             {
-                new(DataverseFailureCode.RecipientEmailNotFound, "Email was not found")
+                Failure.Create(DataverseFailureCode.RecipientEmailNotFound, "Email was not found")
             },
             {
-                new(DataverseFailureCode.InvalidFileSize, "Some invalid file size message")
+                Failure.Create(DataverseFailureCode.InvalidFileSize, "Some invalid file size message")
             }
         };
 }

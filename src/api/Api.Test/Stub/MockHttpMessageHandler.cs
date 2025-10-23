@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Infra.Dataverse.Api.Test;
 
-internal sealed class MockHttpMessageHandler(HttpResponseMessage response, Func<HttpRequestMessage, Task>? callbackAsync = null) : HttpMessageHandler
+using CallbackFunc = Func<HttpRequestMessage, Task>;
+
+internal sealed class MockHttpMessageHandler(HttpResponseMessage response, CallbackFunc? callbackAsync = null) : HttpMessageHandler
 {
     private int callsCount = 0;
 

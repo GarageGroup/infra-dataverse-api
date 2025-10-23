@@ -23,7 +23,7 @@ partial class DataverseAlternateKeyTest
     [Fact]
     public void Constructor_ArgumentsAreSingle_ExpectCorrectValue()
     {
-        var input = new Dictionary<string, string>()
+        var input = new Dictionary<string, string>
         {
             { "a", "b" }
         };
@@ -35,7 +35,7 @@ partial class DataverseAlternateKeyTest
     [Fact]
     public void Constructor_ArgumentsAreSeveral_ExpectCorrectValue()
     {
-        var input = new Dictionary<string, string>()
+        var input = new Dictionary<string, string>
         {
             { "a", "b" }, { "ac", "" }, { "ad", "b" }, { "ab", "ab" },
         };
@@ -47,7 +47,7 @@ partial class DataverseAlternateKeyTest
     [Fact]
     public void Constructor_ArgumentsAreSeveral_ExpectCorrectEscapedValue()
     {
-        var input = new Dictionary<string, string>()
+        var input = new Dictionary<string, string>
         {
             { "a", "b" }, { "a-c", string.Empty }, { "a=d", "b " }, { "a/b", @"a\b" },
         };
@@ -59,7 +59,7 @@ partial class DataverseAlternateKeyTest
     [Fact]
     public void Constructor_ArgumentValuesAreNullOrEmpty_ExpectEmpty()
     {
-        var input = new Dictionary<string, string>()
+        var input = new Dictionary<string, string>
         {
             { "a", string.Empty }, { "ac", null! }, { "ad", string.Empty }, { "ab", string.Empty },
         };

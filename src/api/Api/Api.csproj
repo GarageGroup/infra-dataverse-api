@@ -4,14 +4,14 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api</AssemblyName>
-    <Version>3.19.0</Version>
+    <Version>3.20.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.15.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions" Version="3.17.0" />
+    <PackageReference Include="Azure.Identity" Version="1.17.0" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions" Version="3.17.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.10" />
     <PackageReference Include="PrimeFuncPack.Dependency" Version="2.1.0" />
     <PackageReference Include="PrimeFuncPack.Primitives.Pipeline" Version="3.0.0" />
     <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="3.0.0" />

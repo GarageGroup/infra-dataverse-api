@@ -15,14 +15,12 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeResponseJsonSet.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var token = new CancellationToken(canceled: false);
-
         var ex = await Assert.ThrowsAsync<ArgumentNullException>(InnerGetEntitySetAsync);
         Assert.Equal("input", ex.ParamName);
 
         Task InnerGetEntitySetAsync()
             =>
-            dataverseApiClient.FetchXmlAsync<StubResponseJson>(null!, token).AsTask();
+            dataverseApiClient.FetchXmlAsync<StubResponseJson>(null!, TestContext.Current.CancellationToken).AsTask();
     }
 
     [Theory]
@@ -42,10 +40,9 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(success);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider(), callerUserId);
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, token);
+        _ = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, TestContext.Current.CancellationToken);
 
-        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, token), Times.Once);
+        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -57,7 +54,7 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = new Fixture().Create<DataverseFetchXmlIn>();
-        var actual = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             DataverseFailureCode.Unknown,
@@ -76,7 +73,7 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
         
         var input = new Fixture().Create<DataverseFetchXmlIn>();
-        var actual = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, CancellationToken.None);
+        var actual = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, TestContext.Current.CancellationToken);
 
         Assert.StrictEqual(failure, actual);
     }
@@ -90,7 +87,7 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = new Fixture().Create<DataverseFetchXmlIn>();
-        var actual = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, CancellationToken.None);
+        var actual = await dataverseApiClient.FetchXmlAsync<StubResponseJson>(input, TestContext.Current.CancellationToken);
         
         Assert.StrictEqual(expected, actual);
     }

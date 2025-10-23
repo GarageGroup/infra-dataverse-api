@@ -4,21 +4,21 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Abstractions</AssemblyName>
-    <Version>3.17.0</Version>
+    <Version>3.17.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.ChangeSetExecute" Version="1.5.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EmailSend" Version="1.7.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityCreate" Version="3.15.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityDelete" Version="3.5.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityGet" Version="3.13.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntitySetGet" Version="3.13.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityUpdate" Version="3.15.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.FetchXml" Version="1.6.0" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.ChangeSetExecute" Version="1.5.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EmailSend" Version="1.7.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityCreate" Version="3.15.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityDelete" Version="3.5.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityGet" Version="3.13.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntitySetGet" Version="3.13.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityUpdate" Version="3.15.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.FetchXml" Version="1.6.1" />
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.Impersonate" Version="2.2.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.Search" Version="3.13.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.WhoAmI" Version="1.5.0" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.Search" Version="3.13.1" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.WhoAmI" Version="1.5.1" />
     <PackageReference Include="GarageGroup.Infra.HealthCheck.Api.Contract.Ping" Version="0.0.1" />
   </ItemGroup>
 

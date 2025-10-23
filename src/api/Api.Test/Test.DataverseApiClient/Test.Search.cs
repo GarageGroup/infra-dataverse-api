@@ -14,14 +14,13 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeSearchJsonOut.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var token = new CancellationToken(canceled: false);
         var ex = await Assert.ThrowsAsync<ArgumentNullException>(InnerSearchAsync);
 
         Assert.Equal("input", ex.ParamName);
 
         Task InnerSearchAsync()
             =>
-            dataverseApiClient.SearchAsync(null!, token).AsTask();
+            dataverseApiClient.SearchAsync(null!, TestContext.Current.CancellationToken).AsTask();
     }
 
     [Theory]
@@ -32,10 +31,9 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeSearchJsonOut.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider(), callerId);
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.SearchAsync(input, token);
+        _ = await dataverseApiClient.SearchAsync(input, TestContext.Current.CancellationToken);
 
-        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, token), Times.Once);
+        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -46,7 +44,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockHttpApi(sourceException);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.SearchAsync(SomeDataverseSearchInput, default);
+        var actual = await dataverseApiClient.SearchAsync(SomeDataverseSearchInput, TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             DataverseFailureCode.Unknown,
@@ -64,7 +62,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(failure);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.SearchAsync(SomeDataverseSearchInput, CancellationToken.None);
+        var actual = await dataverseApiClient.SearchAsync(SomeDataverseSearchInput, TestContext.Current.CancellationToken);
         Assert.StrictEqual(failure, actual);
     }
 
@@ -76,7 +74,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(success.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.SearchAsync(SomeDataverseSearchInput, default);
+        var actual = await dataverseApiClient.SearchAsync(SomeDataverseSearchInput, TestContext.Current.CancellationToken);
         Assert.StrictEqual(expected, actual);
     }
 }

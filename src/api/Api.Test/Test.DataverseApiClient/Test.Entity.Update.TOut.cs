@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoFixture;
 using Moq;
 using Xunit;
 
@@ -15,14 +14,13 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeResponseJson.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var token = new CancellationToken(canceled: false);
         var ex = await Assert.ThrowsAsync<ArgumentNullException>(InnerUpdateEntityAsync);
 
         Assert.Equal("input", ex.ParamName);
 
         Task InnerUpdateEntityAsync()
             =>
-            dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson?>(null!, token).AsTask();
+            dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson?>(null!, TestContext.Current.CancellationToken).AsTask();
     }
 
     [Theory]
@@ -33,10 +31,10 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeResponseJson.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider(), callerId);
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.UpdateEntityAsync<IStubRequestJson, StubResponseJson>(input, token);
+        _ = await dataverseApiClient.UpdateEntityAsync<IStubRequestJson, StubResponseJson>(
+            input, TestContext.Current.CancellationToken);
 
-        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, token), Times.Once);
+        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -48,7 +46,8 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = SomeDataverseEntityUpdateInput;
-        var actual = await dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson>(
+            input, TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             DataverseFailureCode.Unknown,
@@ -67,7 +66,8 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = SomeDataverseEntityUpdateInput;
-        var actual = await dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson>(
+            input, TestContext.Current.CancellationToken);
 
         Assert.StrictEqual(failure, actual);
     }
@@ -81,7 +81,8 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = SomeDataverseEntityUpdateInput;
-        var actual = await dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.UpdateEntityAsync<StubRequestJson, StubResponseJson>(
+            input, TestContext.Current.CancellationToken);
 
         var expected = new DataverseEntityUpdateOut<StubResponseJson>(success);
         Assert.StrictEqual(expected, actual);

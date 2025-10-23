@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -22,8 +21,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response, CallbackAsync);
         var httpApi = new DataverseHttpApi(mockMessageHandler, dataverseUri);
 
-        var cancellationToken = new CancellationToken(canceled: false);
-        _ = await httpApi.SendChangeSetAsync(request, cancellationToken);
+        _ = await httpApi.SendChangeSetAsync(request, TestContext.Current.CancellationToken);
 
         mockMessageHandler.Verify(1);
 
@@ -56,7 +54,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, default);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
         var expected = Failure.Create(DataverseFailureCode.Unauthorized, failureMessage);
 
         Assert.Equal(expected, actual);
@@ -76,7 +74,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, CancellationToken.None);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
 
         Assert.Equal(expected, actual);
     }
@@ -103,7 +101,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, default);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
         var expected = Failure.Create(DataverseFailureCode.Unauthorized, failureMessage);
 
         Assert.Equal(expected, actual);
@@ -136,7 +134,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, default);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
         var expected = Failure.Create(DataverseFailureCode.Unknown, "An unexpected Dataverse respose status: BadRequest");
 
         Assert.Equal(expected, actual);
@@ -172,7 +170,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, CancellationToken.None);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
 
         Assert.Equal(expected, actual);
     }
@@ -207,7 +205,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, CancellationToken.None);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
 
         Assert.Equal(expected, actual);
     }
@@ -226,7 +224,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, default);
+        var actual = await httpApi.SendChangeSetAsync(SomeChangeSetRequest, TestContext.Current.CancellationToken);
         Assert.Equal(expected, actual);
     }
 }

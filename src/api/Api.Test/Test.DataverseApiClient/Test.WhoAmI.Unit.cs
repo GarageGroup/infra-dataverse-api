@@ -16,10 +16,9 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeWhoAmIOutJson.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider(), callerId);
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.WhoAmIAsync(input, token);
+        _ = await dataverseApiClient.WhoAmIAsync(input, TestContext.Current.CancellationToken);
 
-        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, token), Times.Once);
+        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -30,7 +29,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockHttpApi(sourceException);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.WhoAmIAsync(default(Unit), CancellationToken.None);
+        var actual = await dataverseApiClient.WhoAmIAsync(default(Unit), TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             DataverseFailureCode.Unknown,
@@ -48,7 +47,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(failure);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.WhoAmIAsync(default(Unit), CancellationToken.None);
+        var actual = await dataverseApiClient.WhoAmIAsync(default(Unit), TestContext.Current.CancellationToken);
         Assert.StrictEqual(failure, actual);
     }
 
@@ -65,7 +64,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(success.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.WhoAmIAsync(default(Unit), CancellationToken.None);
+        var actual = await dataverseApiClient.WhoAmIAsync(default(Unit), TestContext.Current.CancellationToken);
 
         var expected = new DataverseWhoAmIOut(
             businessUnitId: new("51ea96d6-5119-4059-b649-d90c0a4aeab6"),

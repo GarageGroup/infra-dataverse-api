@@ -15,14 +15,13 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeEmailCreateJsonOut.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var token = new CancellationToken(canceled: false);
         var ex = await Assert.ThrowsAsync<ArgumentNullException>(InnerCreateEmailAsync);
 
         Assert.Equal("input", ex.ParamName);
 
         Task InnerCreateEmailAsync()
             =>
-            dataverseApiClient.CreateEmailAsync(null!, token).AsTask();
+            dataverseApiClient.CreateEmailAsync(null!, TestContext.Current.CancellationToken).AsTask();
     }
 
     [Theory]
@@ -33,10 +32,9 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeEmailCreateJsonOut.InnerToJsonResponse(), OnRequest);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.CreateEmailAsync(input, token);
+        _ = await dataverseApiClient.CreateEmailAsync(input, TestContext.Current.CancellationToken);
 
-        mockHttpApi.Verify(p => p.SendJsonAsync(It.IsAny<DataverseJsonRequest>(), token), Times.Once);
+        mockHttpApi.Verify(p => p.SendJsonAsync(It.IsAny<DataverseJsonRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 
         void OnRequest(DataverseJsonRequest actual)
             =>
@@ -51,8 +49,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeEmailCreateJsonOut.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var token = new CancellationToken(canceled: false);
-        var result = await dataverseApiClient.CreateEmailAsync(invalidInput, token);
+        var result = await dataverseApiClient.CreateEmailAsync(invalidInput, TestContext.Current.CancellationToken);
 
         Assert.StrictEqual(expectedFailure, result);
     }
@@ -65,7 +62,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockHttpApi(sourceException);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, default);
+        var actual = await dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             DataverseFailureCode.Unknown,
@@ -83,7 +80,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(failure);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, default);
+        var actual = await dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, TestContext.Current.CancellationToken);
 
         Assert.StrictEqual(failure, actual);
     }
@@ -99,7 +96,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(emailOut.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, default);
+        var actual = await dataverseApiClient.CreateEmailAsync(SomeEmailCreateIn, TestContext.Current.CancellationToken);
 
         var expected = new DataverseEmailCreateOut(
             emailId: new("2deae2b9-84e7-4316-9271-c74d60b56631"));

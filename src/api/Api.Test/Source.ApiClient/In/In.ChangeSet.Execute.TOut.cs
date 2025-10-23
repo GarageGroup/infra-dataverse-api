@@ -3,9 +3,11 @@ using Xunit;
 
 namespace GarageGroup.Infra.Dataverse.Api.Test;
 
+using DataverseObjectSetExecuteIn = DataverseChangeSetExecuteIn<object>;
+
 partial class ApiClientTestDataSource
 {
-    public static TheoryData<Guid?, Guid, Guid, DataverseChangeSetExecuteIn<object>, DataverseChangeSetRequest> ChangeSetExecuteWithTOutInputTestData
+    public static TheoryData<Guid?, Guid, Guid, DataverseObjectSetExecuteIn, DataverseChangeSetRequest> ChangeSetExecuteWithTOutInputTestData
         =>
         new()
         {

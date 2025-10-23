@@ -119,6 +119,8 @@ internal sealed partial class DataverseHttpApi : IDataverseHttpApi
             "0x80040203" or "0x80048d19" => DataverseFailureCode.InvalidPayload,
             "0x80040b0a" => DataverseFailureCode.RecipientEmailNotFound,
             "0x80044a02" => DataverseFailureCode.InvalidFileSize,
+            "0x80040265" => DataverseFailureCode.IsvAborted,
+            "0x8004022e" => DataverseFailureCode.CannotUpdateBecauseItIsReadOnly,
             _ => DataverseFailureCode.Unknown
         };
     }

@@ -300,6 +300,34 @@ partial class HttpApiTestDataSource
                 invalidFileSizeFailure.ToJsonContent(),
                 new(DataverseFailureCode.InvalidFileSize, "Attachment file size is too big."));
 
+            var isvAbortedFailure = new StubFailureJson
+            {
+                Failure = new()
+                {
+                    Code = "0x80040265",
+                    Message = "ISV code aborted the operation."
+                }
+            };
+
+            data.Add(
+                HttpStatusCode.BadRequest,
+                invalidFileSizeFailure.ToJsonContent(),
+                new(DataverseFailureCode.InvalidFileSize, "Attachment file size is too big."));
+
+            var cannotUpdateBecauseItIsReadOnlyFailure = new StubFailureJson
+            {
+                Failure = new()
+                {
+                    Code = "0x8004022e",
+                    Message = "The object cannot be updated because it is read-only."
+                }
+            };
+
+            data.Add(
+                HttpStatusCode.BadRequest,
+                cannotUpdateBecauseItIsReadOnlyFailure.ToJsonContent(),
+                new(DataverseFailureCode.CannotUpdateBecauseItIsReadOnly, "The object cannot be updated because it is read-only."));
+
             var unknownFailure = new StubFailureJson
             {
                 Failure = new()
