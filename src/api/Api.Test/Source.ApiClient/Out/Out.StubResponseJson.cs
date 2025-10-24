@@ -9,10 +9,10 @@ partial class ApiClientTestDataSource
         new()
         {
             {
-                default
+                default(StubResponseJson?)
             },
             {
-                new()
+                new StubResponseJson
                 {
                     Id = 15,
                     Name = "Some name"

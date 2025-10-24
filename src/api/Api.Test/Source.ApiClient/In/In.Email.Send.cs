@@ -8,14 +8,16 @@ using Xunit;
 
 namespace GarageGroup.Infra.Dataverse.Api.Test;
 
+using DataverseEmailCreateData = TheoryData<DataverseEmailSendIn, DataverseJsonRequest?, DataverseJsonRequest, DataverseEmailCreateJsonOut?>;
+
 partial class ApiClientTestDataSource
 {
-    public static TheoryData<DataverseEmailSendIn, DataverseJsonRequest?, DataverseJsonRequest, DataverseEmailCreateJsonOut?> EmailSendInputTestData
+    public static DataverseEmailCreateData EmailSendInputTestData
     {
         get
         {
             var fixture = new Fixture();
-            var data = new TheoryData<DataverseEmailSendIn, DataverseJsonRequest?, DataverseJsonRequest, DataverseEmailCreateJsonOut?>();
+            var data = new DataverseEmailCreateData();
 
             for (int i = 0; i < 5; i++)
             {
@@ -50,9 +52,15 @@ partial class ApiClientTestDataSource
                         recipients:
                         [
                             new(emails[1], DataverseEmailRecipientType.ToRecipient),
-                            new(emailMember: new(memberIds[0], DataverseEmailMemberType.Account), DataverseEmailRecipientType.ToRecipient),
-                            new(emailMember: new(memberIds[1], DataverseEmailMemberType.Contact), DataverseEmailRecipientType.CcRecipient),
-                            new(emailMember: new(memberIds[2], DataverseEmailMemberType.SystemUser), DataverseEmailRecipientType.BccRecipient),
+                            new(
+                                emailMember: new(memberIds[0], DataverseEmailMemberType.Account),
+                                emailRecipientType: DataverseEmailRecipientType.ToRecipient),
+                            new(
+                                emailMember: new(memberIds[1], DataverseEmailMemberType.Contact),
+                                emailRecipientType: DataverseEmailRecipientType.CcRecipient),
+                            new(
+                                emailMember: new(memberIds[2], DataverseEmailMemberType.SystemUser),
+                                emailRecipientType: DataverseEmailRecipientType.BccRecipient),
                             new(emails[2], DataverseEmailRecipientType.ToRecipient)
                         ])
                     {

@@ -24,5 +24,9 @@ public enum DataverseFailureCode
 
     RecipientEmailNotFound,
 
-    InvalidFileSize
+    InvalidFileSize,
+
+    IsvAborted,
+
+    CannotUpdateBecauseItIsReadOnly
 }

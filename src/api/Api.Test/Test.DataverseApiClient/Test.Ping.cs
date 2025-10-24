@@ -16,10 +16,9 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(SomeWhoAmIOutJson.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider(), callerId);
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.PingAsync(default, token);
+        _ = await dataverseApiClient.PingAsync(default, TestContext.Current.CancellationToken);
 
-        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, token), Times.Once);
+        mockHttpApi.Verify(p => p.SendJsonAsync(expectedRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -30,7 +29,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockHttpApi(sourceException);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.PingAsync(default, CancellationToken.None);
+        var actual = await dataverseApiClient.PingAsync(default, TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             "An unexpected exception was thrown when trying to ping a Dataverse API",
@@ -47,7 +46,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(failure);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.PingAsync(default, CancellationToken.None);
+        var actual = await dataverseApiClient.PingAsync(default, TestContext.Current.CancellationToken);
         var expected = Failure.Create(failure.FailureMessage, failure.SourceException);
 
         Assert.StrictEqual(expected, actual);
@@ -66,7 +65,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockJsonHttpApi(success.InnerToJsonResponse());
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.PingAsync(default, CancellationToken.None);
+        var actual = await dataverseApiClient.PingAsync(default, TestContext.Current.CancellationToken);
         var expected = Result.Success<Unit>(default);
 
         Assert.StrictEqual(expected, actual);

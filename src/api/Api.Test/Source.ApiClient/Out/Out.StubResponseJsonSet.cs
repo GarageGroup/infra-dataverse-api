@@ -2,9 +2,12 @@ using Xunit;
 
 namespace GarageGroup.Infra.Dataverse.Api.Test;
 
+using DataverseStubResponseSetJsonGetOut = DataverseEntitySetJsonGetOut<StubResponseJson>;
+using DataverseStubResponseSetGetOut = DataverseEntitySetGetOut<StubResponseJson>;
+
 partial class ApiClientTestDataSource
 {
-    public static TheoryData<DataverseEntitySetJsonGetOut<StubResponseJson>, DataverseEntitySetGetOut<StubResponseJson>> StubResponseSetOutputTestData
+    public static TheoryData<DataverseStubResponseSetJsonGetOut, DataverseStubResponseSetGetOut> StubResponseSetOutputTestData
         =>
         new()
         {

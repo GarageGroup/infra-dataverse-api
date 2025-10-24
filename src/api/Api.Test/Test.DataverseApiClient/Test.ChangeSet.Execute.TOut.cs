@@ -14,7 +14,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockChangeSetHttpApi(SomeChangeSetResponse);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        _ = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(default, default);
+        _ = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(default, TestContext.Current.CancellationToken);
 
         mockHttpApi.Verify(
             a => a.SendChangeSetAsync(It.IsAny<DataverseChangeSetRequest>(), It.IsAny<CancellationToken>()),
@@ -27,7 +27,7 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockChangeSetHttpApi(SomeChangeSetResponse);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(default, default);
+        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(default, TestContext.Current.CancellationToken);
         var expected = default(DataverseChangeSetExecuteOut<StubResponseJson>);
 
         Assert.StrictEqual(expected, actual);
@@ -46,7 +46,9 @@ partial class DataverseApiClientTest
                 new StubTransactableIn<StubRequestJson>()
             ]);
 
-        var actual = await dataverseApiClient.ExecuteChangeSetAsync<StubRequestJson, StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.ExecuteChangeSetAsync<StubRequestJson, StubResponseJson>(
+            input, TestContext.Current.CancellationToken);
+
         Assert.True(actual.IsFailure);
 
         var actualFailure = actual.FailureOrThrow();
@@ -67,11 +69,9 @@ partial class DataverseApiClientTest
         var guidProvider = CreateGuidProvider(batchId, changeSetId);
 
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, guidProvider, callerId);
+        _ = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(input, TestContext.Current.CancellationToken);
 
-        var token = new CancellationToken(canceled: false);
-        _ = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(input, token);
-
-        mockHttpApi.Verify(p => p.SendChangeSetAsync(expectedRequest, token), Times.Once);
+        mockHttpApi.Verify(p => p.SendChangeSetAsync(expectedRequest, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = SomeChangeSetInput;
-        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(input, TestContext.Current.CancellationToken);
 
         var expected = Failure.Create(
             DataverseFailureCode.Unknown,
@@ -102,7 +102,7 @@ partial class DataverseApiClientTest
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
         var input = SomeChangeSetInput;
-        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(input, default);
+        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(input, TestContext.Current.CancellationToken);
 
         Assert.StrictEqual(failure, actual);
     }
@@ -113,7 +113,9 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockChangeSetHttpApi(default(DataverseChangeSetResponse));
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(SomeChangeSetInput, default);
+        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(
+            SomeChangeSetInput, TestContext.Current.CancellationToken);
+
         var expected = default(DataverseChangeSetExecuteOut<StubResponseJson>);
 
         Assert.StrictEqual(expected, actual);
@@ -134,7 +136,8 @@ partial class DataverseApiClientTest
         var mockHttpApi = CreateMockChangeSetHttpApi(changeSetResponse);
         var dataverseApiClient = CreateDataverseApiClient(mockHttpApi.Object, CreateGuidProvider());
 
-        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(SomeChangeSetInput, default);
+        var actual = await dataverseApiClient.ExecuteChangeSetAsync<object, StubResponseJson>(
+            SomeChangeSetInput, TestContext.Current.CancellationToken);
 
         var expected = new DataverseChangeSetExecuteOut<StubResponseJson>(
             values: [null, SomeResponseJson, null]);

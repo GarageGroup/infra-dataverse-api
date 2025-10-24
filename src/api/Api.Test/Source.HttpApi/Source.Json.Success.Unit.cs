@@ -10,13 +10,13 @@ partial class HttpApiTestDataSource
         new()
         {
             {
-                new("Some string")
+                new StringContent("Some string")
             },
             {
-                new(string.Empty)
+                new StringContent(string.Empty)
             },
             {
-                null
+                (StringContent?)null
             }
         };
 }

@@ -4,12 +4,12 @@
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Abstractions.EntityDelete</AssemblyName>
-    <Version>3.5.0</Version>
+    <Version>3.5.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.EntityKey" Version="3.1.6" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.FailureCode" Version="2.2.5" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.FailureCode" Version="2.2.6" />
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.Impersonation" Version="1.0.0" />
     <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.Transaction" Version="1.0.3" />
     <PackageReference Include="PrimeFuncPack.Core.Failure" Version="2.2.0" />

@@ -31,9 +31,15 @@ partial class ApiClientTestDataSource
                         recipients:
                         [
                             new(emails[1], DataverseEmailRecipientType.ToRecipient),
-                            new(emailMember: new(memberIds[0], DataverseEmailMemberType.Account), DataverseEmailRecipientType.ToRecipient),
-                            new(emailMember: new(memberIds[1], DataverseEmailMemberType.Contact), DataverseEmailRecipientType.CcRecipient),
-                            new(emailMember: new(memberIds[2], DataverseEmailMemberType.SystemUser), DataverseEmailRecipientType.BccRecipient),
+                            new(
+                                emailMember: new(memberIds[0], DataverseEmailMemberType.Account),
+                                emailRecipientType: DataverseEmailRecipientType.ToRecipient),
+                            new(
+                                emailMember: new(memberIds[1], DataverseEmailMemberType.Contact),
+                                emailRecipientType: DataverseEmailRecipientType.CcRecipient),
+                            new(
+                                emailMember: new(memberIds[2], DataverseEmailMemberType.SystemUser),
+                                emailRecipientType: DataverseEmailRecipientType.BccRecipient),
                             new(emails[2], DataverseEmailRecipientType.ToRecipient)
                         ],
                         extensionData: default),
@@ -159,7 +165,9 @@ partial class ApiClientTestDataSource
                 recipients: new DataverseEmailRecipient[]
                 {
                     new(fixture.Create<MailAddress>().Address, DataverseEmailRecipientType.ToRecipient),
-                    new(emailMember: new(new Fixture().Create<Guid>(), DataverseEmailMemberType.Account), DataverseEmailRecipientType.ToRecipient)
+                    new(
+                        emailMember: new(new Fixture().Create<Guid>(), DataverseEmailMemberType.Account),
+                        emailRecipientType: DataverseEmailRecipientType.ToRecipient)
                 },
                 extensionData: default);
 
@@ -173,7 +181,9 @@ partial class ApiClientTestDataSource
                 recipients:
                 [
                     new(fixture.Create<MailAddress>().Address, DataverseEmailRecipientType.ToRecipient),
-                    new(emailMember: new(new Fixture().Create<Guid>(), DataverseEmailMemberType.Account), DataverseEmailRecipientType.ToRecipient)
+                    new(
+                        emailMember: new(new Fixture().Create<Guid>(), DataverseEmailMemberType.Account),
+                        emailRecipientType: DataverseEmailRecipientType.ToRecipient)
                 ],
                 extensionData: default);
 

@@ -1,7 +1,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,8 +18,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response, CallbackAsync);
         var httpApi = new DataverseHttpApi(mockMessageHandler, dataverseUri);
 
-        var cancellationToken = new CancellationToken(canceled: false);
-        _ = await httpApi.SendJsonAsync(request, cancellationToken);
+        _ = await httpApi.SendJsonAsync(request, TestContext.Current.CancellationToken);
 
         mockMessageHandler.Verify(1);
 
@@ -53,7 +51,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, default);
+        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, TestContext.Current.CancellationToken);
         var expected = Failure.Create(DataverseFailureCode.Unauthorized, failureMessage);
 
         Assert.Equal(expected, actual);
@@ -73,7 +71,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, CancellationToken.None);
+        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, TestContext.Current.CancellationToken);
 
         Assert.Equal(expected, actual);
     }
@@ -92,7 +90,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, CancellationToken.None);
+        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, TestContext.Current.CancellationToken);
         var expected = default(DataverseJsonResponse);
 
         Assert.Equal(expected, actual);
@@ -112,7 +110,7 @@ partial class DataverseHttpApiTest
         using var mockMessageHandler = new MockHttpMessageHandler(response);
         var httpApi = new DataverseHttpApi(mockMessageHandler, SomeDataverseBaseUri);
 
-        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, default);
+        var actual = await httpApi.SendJsonAsync(SomeJsonRequest, TestContext.Current.CancellationToken);
         Assert.Equal(expected, actual);
     }
 }

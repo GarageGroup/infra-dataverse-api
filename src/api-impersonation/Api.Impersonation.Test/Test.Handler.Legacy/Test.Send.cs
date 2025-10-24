@@ -22,9 +22,7 @@ partial class LegacyImpersonationDelegatingHandlerTest
         var impersonationHandler = CreateImpersonationDelegatingHandler(sourceHandler, mockCallerIdProvider.Object);
 
         var httpClient = new HttpMessageInvoker(impersonationHandler);
-
-        var token = new CancellationToken(canceled: false);
-        var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => httpClient.SendAsync(null!, token));
+        var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => httpClient.SendAsync(null!, TestContext.Current.CancellationToken));
 
         Assert.Equal("request", ex.ParamName);
     }
@@ -51,10 +49,8 @@ partial class LegacyImpersonationDelegatingHandlerTest
             request.Headers.Add("MSCRMCallerID", "Some calleId");
         }
 
-        var token = new CancellationToken(canceled: false);
-
-        _ = await httpClient.SendAsync(request, token);
-        mockProxyHandler.Verify(p => p.InvokeAsync(It.IsAny<HttpRequestMessage>(), token), Times.Once);
+        _ = await httpClient.SendAsync(request, TestContext.Current.CancellationToken);
+        mockProxyHandler.Verify(p => p.InvokeAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()), Times.Once);
         
         static void Callback(HttpRequestMessage actualRequest)
         {
@@ -77,7 +73,7 @@ partial class LegacyImpersonationDelegatingHandlerTest
         var httpClient = new HttpMessageInvoker(impersonationHandler);
 
         using var request = new HttpRequestMessage();
-        var actual = await httpClient.SendAsync(request, default);
+        var actual = await httpClient.SendAsync(request, TestContext.Current.CancellationToken);
 
         Assert.Same(sourceResponse, actual);
     }
