@@ -1,25 +1,34 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);IDE0130;CA1859</NoWarn>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Abstractions</AssemblyName>
-    <Version>3.17.1</Version>
+    <Version>3.17.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.ChangeSetExecute" Version="1.5.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EmailSend" Version="1.7.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityCreate" Version="3.15.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityDelete" Version="3.5.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityGet" Version="3.13.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntitySetGet" Version="3.13.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.EntityUpdate" Version="3.15.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.FetchXml" Version="1.6.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.Impersonate" Version="2.2.0" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.Search" Version="3.13.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions.WhoAmI" Version="1.5.1" />
-    <PackageReference Include="GarageGroup.Infra.HealthCheck.Api.Contract.Ping" Version="0.0.1" />
+    <ProjectReference Include="../Api.Abstractions.ChangeSetExecute/Api.Abstractions.ChangeSetExecute.csproj" />
+    <ProjectReference Include="../Api.Abstractions.EmailSend/Api.Abstractions.EmailSend.csproj" />
+    <ProjectReference Include="../Api.Abstractions.EntityCreate/Api.Abstractions.EntityCreate.csproj" />
+    <ProjectReference Include="../Api.Abstractions.EntityDelete/Api.Abstractions.EntityDelete.csproj" />
+    <ProjectReference Include="../Api.Abstractions.EntityGet/Api.Abstractions.EntityGet.csproj" />
+    <ProjectReference Include="../Api.Abstractions.EntitySetGet/Api.Abstractions.EntitySetGet.csproj" />
+    <ProjectReference Include="../Api.Abstractions.EntityUpdate/Api.Abstractions.EntityUpdate.csproj" />
+    <ProjectReference Include="../Api.Abstractions.FetchXml/Api.Abstractions.FetchXml.csproj" />
+    <ProjectReference Include="../Api.Abstractions.Impersonate/Api.Abstractions.Impersonate.csproj" />
+    <ProjectReference Include="../Api.Abstractions.Search/Api.Abstractions.Search.csproj" />
+    <ProjectReference Include="../Api.Abstractions.WhoAmI/Api.Abstractions.WhoAmI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GarageGroup.Infra.HealthCheck.Api.Contract.Ping" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
