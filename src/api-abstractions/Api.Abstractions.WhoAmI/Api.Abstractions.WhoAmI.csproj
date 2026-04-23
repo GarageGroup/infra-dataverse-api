@@ -1,15 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);IDE0130;CA1859</NoWarn>
     <RootNamespace>GarageGroup.Infra</RootNamespace>
     <AssemblyName>GarageGroup.Infra.Dataverse.Api.Abstractions.WhoAmI</AssemblyName>
-    <Version>1.5.1</Version>
+    <Version>1.5.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.FailureCode" Version="2.2.6" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Core.Impersonation" Version="1.0.0" />
+    <ProjectReference Include="../../api-core/Api.Core.FailureCode/Api.Core.FailureCode.csproj" />
+    <ProjectReference Include="../../api-core/Api.Core.Impersonation/Api.Core.Impersonation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="PrimeFuncPack.Core.Failure" Version="2.2.0" />
     <PackageReference Include="PrimeFuncPack.Core.Result" Version="2.0.2" />
   </ItemGroup>

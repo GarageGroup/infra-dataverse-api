@@ -1,0 +1,36 @@
+<Solution>
+  <Folder Name="/.sln/">
+    <File Path=".github/workflows/dotnet.yml" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/api-abstractions/">
+    <Project Path="src/api-abstractions/Api.Abstractions.ChangeSetExecute/Api.Abstractions.ChangeSetExecute.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.EmailSend/Api.Abstractions.EmailSend.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.EntityCreate/Api.Abstractions.EntityCreate.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.EntityDelete/Api.Abstractions.EntityDelete.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.EntityGet/Api.Abstractions.EntityGet.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.EntitySetGet/Api.Abstractions.EntitySetGet.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.EntityUpdate/Api.Abstractions.EntityUpdate.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.FetchXml/Api.Abstractions.FetchXml.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.Impersonate/Api.Abstractions.Impersonate.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.Search/Api.Abstractions.Search.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions.WhoAmI/Api.Abstractions.WhoAmI.csproj" />
+    <Project Path="src/api-abstractions/Api.Abstractions/Api.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/api-core/">
+    <Project Path="src/api-core/Api.Core.EntityKey.Test/Api.Core.EntityKey.Test.csproj" />
+    <Project Path="src/api-core/Api.Core.EntityKey/Api.Core.EntityKey.csproj" />
+    <Project Path="src/api-core/Api.Core.ExpandedField/Api.Core.ExpandedField.csproj" />
+    <Project Path="src/api-core/Api.Core.FailureCode/Api.Core.FailureCode.csproj" />
+    <Project Path="src/api-core/Api.Core.Impersonation/Api.Core.Impersonation.csproj" />
+    <Project Path="src/api-core/Api.Core.Transaction/Api.Core.Transaction.csproj" />
+  </Folder>
+  <Folder Name="/api-impersonation/">
+    <Project Path="src/api-impersonation/Api.Impersonation.Test/Api.Impersonation.Test.csproj" />
+    <Project Path="src/api-impersonation/Api.Impersonation/Api.Impersonation.csproj" />
+  </Folder>
+  <Folder Name="/api/">
+    <Project Path="src/api/Api.Test/Api.Test.csproj" />
+    <Project Path="src/api/Api/Api.csproj" />
+  </Folder>
+</Solution>
